@@ -74,8 +74,8 @@ const ChatModule = () => {
 	};
 
 	const startChat = () => {
-		const userId = userIdRef.current.value.toLowerCase();
-		const userName = userNameRef.current.value.toLowerCase();
+		const userId = userIdRef.current.value;
+		const userName = userNameRef.current.value;
 		if (!userId || !userName) {
 			return setErrorText('Fields cannot be empty!');
 		}
@@ -86,13 +86,13 @@ const ChatModule = () => {
 				);
 				if (!filteredData || !filteredData.length) {
 					return addUser();
-				} else if (filteredData[0].userName !== userName) {
+				}
+				if (filteredData[0].userName !== userName) {
 					return setErrorText(
 						"Your name does't match with this username!",
 					);
-				} else {
-					return closeModal();
 				}
+				return closeModal();
 			} else {
 				return addUser();
 			}
