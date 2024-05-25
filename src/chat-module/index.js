@@ -4,7 +4,15 @@ import Sidebar from './components/sidebar';
 import ChatArea from './components/chat-area';
 import Button from '../shared-components/button';
 import Modal from '../shared-components/modal';
-import { Timestamp, addDoc, collection, getDocs } from 'firebase/firestore';
+import {
+	Timestamp,
+	addDoc,
+	collection,
+	getDocs,
+	onSnapshot,
+	orderBy,
+	query,
+} from 'firebase/firestore';
 import { db } from '../firebaseConfig';
 
 const ChatModule = () => {
@@ -24,8 +32,32 @@ const ChatModule = () => {
 			setUserModal(true);
 		} else {
 			fetchUsers();
+			if (selectedChat) {
+				let msgData = [];
+				const unsubscribe = onSnapshot(
+					query(
+						collection(db, 'messages'),
+						orderBy('timestamp', 'asc'),
+					),
+					(snapshot) => {
+						msgData = snapshot.docs.map((doc) => ({
+							id: doc.id,
+							...doc.data(),
+						}));
+						const filteredData = msgData.filter(
+							(item) =>
+								item.players.includes(selectedChat?.userId) &&
+								item.players.includes(user?.userId),
+						);
+						setMessages([...filteredData[0].messages]);
+						return msgData;
+					},
+				);
+
+				return () => unsubscribe();
+			}
 		}
-	}, []);
+	}, [selectedChat]);
 
 	const closeModal = () => {
 		fetchUsers();
