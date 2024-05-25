@@ -1,0 +1,33 @@
+.button-wrapper {
+	background-color: #dee0df;
+	color: black;
+	border-radius: 5px;
+	width: fit-content;
+	height: fit-content;
+	cursor: pointer;
+	font-weight: bold;
+	border: 0;
+}
+
+.button-wrapper:hover {
+	background-color: #535f67;
+}
+
+.button-wrapper:active {
+	transform: translateY(2px);
+}
+
+.default {
+	padding: 15px;
+	font-size: 16px;
+}
+
+.small {
+	padding: 5px;
+	font-size: 14px;
+}
+
+.large {
+	padding: 25px;
+	font-size: 20px;
+}
